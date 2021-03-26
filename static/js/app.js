@@ -17,6 +17,7 @@ d3.json("data/samples.json").then(function (data) {
 
     // define default ID
     demo_info("0")
+    bubble_chart("0")
      // console.log(data.metadata[selected_id]);
   });
 
@@ -26,14 +27,14 @@ d3.json("data/samples.json").then(function (data) {
           var index = data_names.indexOf(value);
           demo_info(index);
           // PieChart(value);
-          // BubbleChart(value);
+          bubble_chart(index);
           // GaugeChart(value);
      });
  };
 
   function demo_info(selected_id){
      d3.json("data/samples.json").then(function (data) {
-          console.log(data.metadata[selected_id]);
+          //console.log(data.metadata[selected_id]);
           var demo_data=data.metadata[selected_id];
           var sampleinfo = d3.select('#sample-metadata');
           sampleinfo.html('');
@@ -45,6 +46,33 @@ d3.json("data/samples.json").then(function (data) {
      });
   };
 
-  
+function bubble_chart(selected_id){
+     d3.json("data/samples.json").then(function (data) {
+          var otu_data=data.samples[selected_id];
+          var otu_sample_val=otu_data.sample_values
+          var otu_ids=otu_data.otu_ids
+          var otu_labels=otu_data.otu_labels
+          var trace1 = {
+               x: otu_ids,
+               y: otu_sample_val,
+               text: otu_labels,
+               hoverinfo: "x+y+text",
+               mode: "markers",
+               marker: {
+                    size: otu_sample_val,
+                    color: otu_ids
+               }
+          };
+
+          var plotData = [trace1]
+
+          var layout = {
+          title: "Sample Volume vs OTU ID",
+          showLegend: false
+          }
+           return Plotly.newPlot("bubble", plotData, layout)
+         });
+     }
+
    
 
