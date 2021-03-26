@@ -17,6 +17,7 @@ d3.json("data/samples.json").then(function (data) {
     demo_info("0")
     bar_chart("0")
     bubble_chart("0")
+    gauge_chart("0")
      // console.log(data.metadata[selected_id]);
   });
 
@@ -27,7 +28,7 @@ d3.json("data/samples.json").then(function (data) {
      demo_info(index);
      bar_chart(index);
      bubble_chart(index);
-     // GaugeChart(value);
+     gauge_chart(index);
 });
 };
 
@@ -116,3 +117,69 @@ function bubble_chart(selected_id){
           return Plotly.newPlot("bubble", plotData, layout)
      });
 }
+
+function gauge_chart(selected_id){
+     d3.json("data/samples.json").then(function (data) {
+          var meta_data=data.metadata[selected_id];
+          var wfreq = meta_data.wfreq
+         // Enter a speed between 0 and 180
+         var level = wfreq;
+ 
+         // Trig to calc meter point
+         var degrees = 180 - level*20,
+              radius = .5;
+         var radians = degrees * Math.PI / 180;
+         var x = radius * Math.cos(radians);
+         var y = radius * Math.sin(radians);
+ 
+         // Path: may have to change to create a better triangle
+         var mainPath = 'M -.0 -0.025 L .0 0.025 L ',
+              pathX = String(x),
+              space = ' ',
+              pathY = String(y),
+              pathEnd = ' Z';
+         var path = mainPath.concat(pathX,space,pathY,pathEnd);
+ 
+         var data = [{ type: 'scatter',
+            x: [0], y:[0],
+             marker: {size: 28, color:'DB5F59'},
+             showlegend: false,
+             name: 'Washing Frequency',
+             text: level,
+             hoverinfo: 'text+name'},
+           { values: [50/9, 50/9, 50/9, 50/9, 50/9, 50/9, 50/9, 50/9, 50/9, 50],
+           rotation: 90,
+           text: ['8-9', '7-8', '6-7', '5-6', '4-5', '3-4', '2-3', '1-2', '0-1', ''],
+           textinfo: 'text',
+           textposition:'inside',
+           marker: {colors: ['rgba(0, 112, 17, 1)', 'rgba(0, 143, 21, 1)', 'rgba(0, 179, 27, 1)',
+           'rgba(0, 219, 33, 1)', 'rgba(5, 255, 43, 1)', 'rgba(66, 255, 95, 1)', 
+           'rgba(97, 255, 121, 1)', 'rgba(122, 255, 142, 1)', 'rgba(173, 255, 186, 1)', 
+           'rgba(255, 255, 255, 0)']},
+           labels: ['8-9', '7-8', '6-7', '5-6', '4-5', '3-4', '2-3', '1-2', '0-1', ''],
+           hoverinfo: 'label',
+           hole: .5,
+           type: 'pie',
+           showlegend: false
+         }];
+ 
+         var layout = {
+           shapes:[{
+               type: 'path',
+               path: path,
+               fillcolor: 'DB5F59',
+               line: {
+                 color: 'DB5F59'
+               }
+             }],
+           title: ' Belly Button Weekly Washing Frequency',
+           xaxis: {zeroline:false, showticklabels:false,
+                      showgrid: false, range: [-1, 1]},
+           yaxis: {zeroline:false, showticklabels:false,
+                      showgrid: false, range: [-1, 1]}
+         };
+ 
+ 
+         return Plotly.newPlot('gauge', data, layout);
+     });
+ }
