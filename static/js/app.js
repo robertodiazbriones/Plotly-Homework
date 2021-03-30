@@ -1,10 +1,9 @@
-
+//Create variable to link drop down menu on html
 var dropdownmenu = d3.select('#selDataset');
 
+//Read file to initialize data on charts
 d3.json("data/samples.json").then(function (data) {
-
     var data_names = data.names;
-    
     data_names.forEach(function (id) {
       dropdownmenu
           .append("option")
@@ -12,15 +11,15 @@ d3.json("data/samples.json").then(function (data) {
           .property("value", id);
     });
 
-
-    // define default ID
+    //Initialize variables
     demo_info("0")
     bar_chart("0")
     bubble_chart("0")
     gauge_chart("0")
-     // console.log(data.metadata[selected_id]);
   });
 
+
+//When a new sample is selected load index of that sample to variables
 function optionChanged(value){
 d3.json("data/samples.json").then(function (data) {
      var data_names = data.names;
@@ -32,9 +31,10 @@ d3.json("data/samples.json").then(function (data) {
 });
 };
 
+
+//Populates Demographic info
 function demo_info(selected_id){
      d3.json("data/samples.json").then(function (data) {
-          //console.log(data.metadata[selected_id]);
           var demo_data=data.metadata[selected_id];
           var sampleinfo = d3.select('#sample-metadata');
           sampleinfo.html('');
@@ -42,12 +42,13 @@ function demo_info(selected_id){
                sampleinfo
                     .append('text').html(key + ": " + demo_data[key])
                     .append('br');
-     });
+          });
      });
 };
 
+
+//Creates Bar chart
 function bar_chart(selected_id){
-     console.log("2 bar chart");
      d3.json("data/samples.json").then(function (data) {
           var otu_data=data.samples[selected_id];
           var otu_sample_val=otu_data.sample_values.slice(0, 10);
@@ -58,9 +59,6 @@ function bar_chart(selected_id){
           }
 
           var otu_labels=otu_data.otu_labels.slice(0, 10)
-          
-          console.log(otu_sample_val);
-          console.log(otu_ids);
 
           var trace = {
                x: otu_sample_val,
@@ -69,7 +67,7 @@ function bar_chart(selected_id){
                orientation: "h"
              };
 
-          // data
+
           var chartData = [trace];
 
           var layout = {
@@ -90,6 +88,8 @@ function bar_chart(selected_id){
      });
 }
 
+
+//Creates bubble chart
 function bubble_chart(selected_id){
      d3.json("data/samples.json").then(function (data) {
           var otu_data=data.samples[selected_id];
@@ -118,10 +118,13 @@ function bubble_chart(selected_id){
      });
 }
 
+
+
 function gauge_chart(selected_id){
      d3.json("data/samples.json").then(function (data) {
           var meta_data=data.metadata[selected_id];
           var wfreq = meta_data.wfreq
+
          // Enter a speed between 0 and 180
          var level = wfreq;
  
@@ -132,7 +135,6 @@ function gauge_chart(selected_id){
          var x = radius * Math.cos(radians);
          var y = radius * Math.sin(radians);
  
-         // Path: may have to change to create a better triangle
          var mainPath = 'M -.0 -0.025 L .0 0.025 L ',
               pathX = String(x),
               space = ' ',
@@ -178,7 +180,6 @@ function gauge_chart(selected_id){
            yaxis: {zeroline:false, showticklabels:false,
                       showgrid: false, range: [-1, 1]}
          };
- 
  
          return Plotly.newPlot('gauge', data, layout);
      });
