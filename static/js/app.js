@@ -119,16 +119,14 @@ function bubble_chart(selected_id){
 }
 
 
-
+//Creates gauge chart
 function gauge_chart(selected_id){
      d3.json("data/samples.json").then(function (data) {
           var meta_data=data.metadata[selected_id];
           var wfreq = meta_data.wfreq
 
-         // Enter a speed between 0 and 180
          var level = wfreq;
- 
-         // Trig to calc meter point
+
          var degrees = 180 - level*20,
               radius = .5;
          var radians = degrees * Math.PI / 180;
