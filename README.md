@@ -1,7 +1,7 @@
 # Plotly-Homework
 
 In this assignment, we were assign to build an interactive dashboard to explore the Belly Button Biodiversity dataset, which catalogs the microbes that colonize human navels.
-The dataset reveals that a small handful of microbial species (also called operational taxonomic units, or OTUs, in the study) were present in more than 70% of people, while the rest were relatively rare.  :microscope:
+The dataset reveals that a small handful of microbial species (also called operational taxonomic units, or OTUs, in the study) were present in more than 70% of people, while the rest were relatively rare.  :man_scientist::microscope::petri_dish::microbe: 
 
 ## Step 1: Plotly
 
@@ -27,3 +27,7 @@ The dataset reveals that a small handful of microbial species (also called opera
 6. Update all of the plots any time that a new sample is selected.
 
 Additionally, you are welcome to create any layout that you would like for your dashboard. 
+
+## Results
+
+Dashboard location [derrikdennis.github.io/Belly_Button_Biodiversity](https://robertodiazbriones.github.io/Plotly-Homework/)
